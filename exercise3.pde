@@ -11,6 +11,8 @@ final int BUTTON_BOTTOM = 280;
 final int BUTTON_LEFT = 115;
 final int BUTTON_RIGHT = 450;
 
+boolean upPressed, downPressed, rightPressed, leftPressed;
+
 float shipX, shipY;
 float shipSpeed = 5;
 float shipWidth = 50;
@@ -64,8 +66,39 @@ void draw() {
     case GAME_RUN:
     
       image(bg, 0, 0);
+ 
+      
+      // ship movement
+      if (upPressed){
+        shipY -= shipSpeed;
+        if(shipY < 0) shipY = 0;
+      }
+      if (downPressed){
+        shipY += shipSpeed;
+        if(shipY + shipWidth > height) shipY = height - shipWidth;
+      }
+      if (leftPressed){
+        shipX -= shipSpeed;
+        if(shipX < 0) shipX = 0;
+      }
+      if (rightPressed){
+        shipX += shipSpeed;
+        if(shipX + shipWidth > width) shipX = width - shipWidth;
+      }
+      
+      // detect goal
+      if (shipY + shipWidth > winningLineY){
+          gameState = GAME_WIN;
+      }
+      
+      // draw ship
       image(ship, shipX, shipY);
+      
+      
+     
+      
       break;
+      
       
     case GAME_WIN:
       image(win, 0, 0);
@@ -74,5 +107,39 @@ void draw() {
     case GAME_OVER:
       image(lose, 0, 0);
       break;
+  }
+}
+
+void keyPressed(){
+  switch(keyCode){
+    case UP:
+      upPressed = true;
+      break;  
+    case DOWN:
+      downPressed = true;
+      break;  
+    case RIGHT:
+      rightPressed = true;
+      break;  
+    case LEFT:
+      leftPressed = true;
+      break;   
+  }
+}
+
+void keyReleased(){
+  switch(keyCode){
+    case UP:
+      upPressed = false;
+      break;  
+    case DOWN:
+      downPressed = false;
+      break;  
+    case RIGHT:
+      rightPressed = false;
+      break;  
+    case LEFT:
+      leftPressed = false;
+      break;  
   }
 }
